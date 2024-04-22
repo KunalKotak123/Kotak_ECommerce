@@ -8,7 +8,7 @@ public class LocalApplication
 
     public static void main(String[] args) {
         System.setProperty("region", Region.AP_SOUTH_1.toString());
-        System.setProperty("aws.dynamodb.endpointOverride", "");
+        System.setProperty("spring.main.allow-bean-definition-overriding", "true");
         SpringApplication.from(inventoryServiceApplication::main).with(ContainerConfig.class).run(args);
     }
 }
