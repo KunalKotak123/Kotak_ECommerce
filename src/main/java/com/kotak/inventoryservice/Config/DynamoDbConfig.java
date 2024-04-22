@@ -60,7 +60,7 @@ public class DynamoDbConfig {
     }
 
     @Bean
-    public DynamoDbTable<Product> getCountryLocaleTable(DynamoDbEnhancedClient dbClient) {
+    public DynamoDbTable<Product> getProductTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Product.TABLE_NAME, TableSchema.fromBean(Product.class));
     }
 }
