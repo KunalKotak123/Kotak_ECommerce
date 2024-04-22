@@ -19,7 +19,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 @Configuration
 @Slf4j
 public class DynamoDbConfig {
-    @Value("${aws.dynamodb.endpointOverride:}")
+    @Value("${aws.dynamodb.endpointOverride}")
     private String dynamodbEndpoint;
     @Value("${region}")
     private String region;
