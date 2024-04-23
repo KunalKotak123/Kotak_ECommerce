@@ -1,16 +1,11 @@
 package com.kotak.inventoryservice.Controllers;
 
-import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
 import com.kotak.inventoryservice.Response.ResponseHandler;
 import com.kotak.inventoryservice.Services.ProductService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +39,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
         productService.createProduct(product);
-        template.send("orders", product.getId(), product );
         return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK);
     }
 

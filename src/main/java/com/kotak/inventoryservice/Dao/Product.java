@@ -2,6 +2,7 @@ package com.kotak.inventoryservice.Dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import lombok.Data;
+import lombok.Setter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -16,6 +17,8 @@ public class Product {
     private String name;
     private Float price;
     private int quantity;
+    @Setter
+    private int reserveQuantity;
     private boolean isAvailable;
 
     public Product() {
@@ -41,6 +44,11 @@ public class Product {
     @DynamoDBAttribute(attributeName = "quantity")
     public int getQuantity() {
         return quantity;
+    }
+
+    @DynamoDBAttribute(attributeName = "reserveQuantity")
+    public int getReserveQuantity() {
+        return reserveQuantity;
     }
 
     public void setQuantity(int quantity) {

@@ -1,6 +1,5 @@
 package com.kotak.inventoryservice.Enums;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum OrderStatus {
@@ -8,7 +7,11 @@ public enum OrderStatus {
 
     COMPLETED("COMPLETED"),
 
-    CANCELED("CANCELED");
+    CANCELED("CANCELED"),
+
+    ACCEPTED("ACCEPTED"),
+
+    REJECTED("REJECTED");
 
     private final String value;
 

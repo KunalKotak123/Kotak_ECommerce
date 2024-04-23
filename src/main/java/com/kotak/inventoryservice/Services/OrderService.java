@@ -1,38 +1,43 @@
 package com.kotak.inventoryservice.Services;
 
 import com.kotak.inventoryservice.Dao.Order;
-import com.kotak.inventoryservice.Dao.Product;
+import com.kotak.inventoryservice.Enums.OrderStatus;
 import com.kotak.inventoryservice.Repository.OrderRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository repository;
+    private final KafkaTemplate<String, Order> template;
+
+    public OrderService(OrderRepository repository, KafkaTemplate<String, Order> template) {
+        this.repository = repository;
+        this.template = template;
+    }
 
     public List<Order> getAll() {
         return repository.getAll();
     }
 
-    //public Product getProductById(String id) { return repository.getProductById(id);}
-
-    //public void createProduct(Product product) {repository.create(product);}
-
     public void add(Order p1) {repository.add(p1);}
 
     public void processOrder(Order order)
     {
-        // update database order table with status completed
-        // send message in kafka saying completed.
+        order.setStatus(OrderStatus.COMPLETED.getValue());
+        repository.updateStatus(order);
+        template.send("orders", order.getId(), order);
     }
 
-    public void cancelOrder(Order order)
+    public void cancelOrder(String id)
     {
-        // update the order status in DDB.
+        Order order = repository.getById(id);
+        order.setStatus(OrderStatus.CANCELED.getValue());
+        repository.updateStatus(order);
+        template.send("orders", order.getId(), order);
     }
 }
