@@ -1,25 +1,22 @@
 package com.kotak.inventoryservice.Factory;
 
-import com.kotak.inventoryservice.Exception.ProcessOrder;
-import com.kotak.inventoryservice.Factory.CancelPendingOrder;
-import com.kotak.inventoryservice.Factory.PendingOrderProcess;
-import com.kotak.inventoryservice.Services.OrderService;
+import com.kotak.inventoryservice.Enums.OrderStatus;
+import com.kotak.inventoryservice.Exception.UnknownOrderStatusException;
 import com.kotak.inventoryservice.Services.ProductService;
+import lombok.SneakyThrows;
 
 public class OrderProcessingFactory
 {
 
-    public static ProcessOrder getOrderProcessor(String status, ProductService productService)
+    @SneakyThrows
+    public static ProcessOrder getOrderProcessor(OrderStatus status, ProductService productService)
     {
-        if(status.equals("Pending"))
-        {
-            return new PendingOrderProcess(productService);
-        }
-        else if(status.equals("Completed"))
-        {
-            return new CompleteOrder(productService);
-        }
-            return new CancelPendingOrder(productService);
+        return switch (status) {
+            case OrderStatus.PENDING -> new PendingOrderProcess(productService);
+            case OrderStatus.COMPLETED -> new CompleteOrder(productService);
+            case OrderStatus.CANCELED -> new CancelPendingOrder(productService);
+            default -> throw new UnknownOrderStatusException(String.format("Unknown Order Status found {}" ,status));
+        };
 
     }
 }

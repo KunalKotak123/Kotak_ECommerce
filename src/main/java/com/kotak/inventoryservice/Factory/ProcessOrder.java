@@ -1,4 +1,4 @@
-package com.kotak.inventoryservice.Exception;
+package com.kotak.inventoryservice.Factory;
 
 import com.kotak.inventoryservice.Dao.Order;
 

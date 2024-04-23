@@ -1,6 +1,7 @@
 package com.kotak.inventoryservice.listener;
 
 import com.kotak.inventoryservice.Dao.Order;
+import com.kotak.inventoryservice.Enums.OrderStatus;
 import com.kotak.inventoryservice.Factory.OrderProcessingFactory;
 import com.kotak.inventoryservice.Services.OrderService;
 import com.kotak.inventoryservice.Services.ProductService;
@@ -18,7 +19,7 @@ public class OrderListener {
 
     @KafkaListener(id = "orders", topics = "orders")
     public void onEvent(Order order) {
-        var op = OrderProcessingFactory.getOrderProcessor(order.getStatus(),productService);
+        var op = OrderProcessingFactory.getOrderProcessor(OrderStatus.valueOf(order.getStatus()),productService);
         op.processOrder(order);
 
     }

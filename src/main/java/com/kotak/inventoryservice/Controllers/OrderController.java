@@ -38,6 +38,7 @@ public class OrderController {
         service.add(order);
 
         // push it in kafka queue
+
         template.send("orders", order.getId(), order );
     }
 

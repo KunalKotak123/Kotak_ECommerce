@@ -19,7 +19,4 @@ public class OrderRepository {
     }
     public void add(Order p1) {table.putItem(p1);}
 
-    // updating ddb
-
-    // deleting ddb.
 }

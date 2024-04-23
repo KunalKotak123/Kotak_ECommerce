@@ -59,9 +59,4 @@ public class ProductController {
         return ResponseHandler.sendResponse("Successfully deleted a product", HttpStatus.OK);
     }
 
-//    @KafkaListener(id = "pickOrder", topics = "orders")
-//    public void onEvent(Order data) {
-//        System.out.printf("Order Received - {}%n");
-//    }
-
 }
