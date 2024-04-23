@@ -38,10 +38,4 @@ public class OrderController {
         service.add(o);
         //template.send("orders", p1.getProductId(), p1 );
     }
-
-    @KafkaListener(id = "orders", topics = "orders")
-    public void onEvent(Product data) {
-        System.out.printf("Order Received - {}%n");
-
-    }
 }
