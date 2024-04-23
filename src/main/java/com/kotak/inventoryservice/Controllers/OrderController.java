@@ -33,9 +33,15 @@ public class OrderController {
     }
 
     @PutMapping("/add")
-    public void add(@RequestBody Order o) {
+    public void createOrder(@RequestBody Order order) {
       //  redisService.decreaseOrderQuantity(p1.getProductId(), p1.getQuantity());
-        service.add(o);
-        //template.send("orders", p1.getProductId(), p1 );
+        service.add(order);
+        // push it in kafka queue
+        template.send("orders", order.getId(), order );
+    }
+
+    @PostMapping("/cancel")
+    public void cancelOrder(@RequestBody Order order) {
+      // cancel the order and send message to inventory service to bump up quantity
     }
 }

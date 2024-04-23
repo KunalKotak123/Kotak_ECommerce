@@ -1,0 +1,19 @@
+package com.kotak.inventoryservice.Factory;
+
+import com.kotak.inventoryservice.Dao.Order;
+import com.kotak.inventoryservice.Exception.ProcessOrder;
+import com.kotak.inventoryservice.Services.OrderService;
+import com.kotak.inventoryservice.Services.ProductService;
+
+public class PendingOrderProcess implements ProcessOrder {
+    private ProductService productService;
+
+    public PendingOrderProcess(ProductService productService) {
+        this.productService = productService;
+    }
+    @Override
+    public void processOrder(Order order)
+    {
+        productService.checkOrder(order);
+    }
+}

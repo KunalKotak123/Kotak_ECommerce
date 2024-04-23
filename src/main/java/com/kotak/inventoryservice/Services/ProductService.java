@@ -1,5 +1,6 @@
 package com.kotak.inventoryservice.Services;
 
+import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
 import com.kotak.inventoryservice.Repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,17 @@ public class ProductService {
         product.setAvailable(false);
 
         repository.delete(product);
+    }
+
+
+    public void checkOrder(Order order)
+    {
+        // check if quantity is available.
+        // put in kafka Accept / Reject
+    }
+
+    public void cancelOrder(Order order)
+    {
+        // bump up the quantity
     }
 }

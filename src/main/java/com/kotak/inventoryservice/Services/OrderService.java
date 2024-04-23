@@ -24,4 +24,15 @@ public class OrderService {
     //public void createProduct(Product product) {repository.create(product);}
 
     public void add(Order p1) {repository.add(p1);}
+
+    public void processOrder(Order order)
+    {
+        // update database order table with status completed
+        // send message in kafka saying completed.
+    }
+
+    public void cancelOrder(Order order)
+    {
+        // update the order status in DDB.
+    }
 }

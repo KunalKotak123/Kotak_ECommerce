@@ -18,4 +18,8 @@ public class OrderRepository {
         return table.scan().items().stream().toList();
     }
     public void add(Order p1) {table.putItem(p1);}
+
+    // updating ddb
+
+    // deleting ddb.
 }
