@@ -1,6 +1,8 @@
 package com.kotak.inventoryservice.Config;
 
 import java.net.URI;
+
+import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 @Configuration
 @Slf4j
 public class DynamoDbConfig {
-    @Value("${aws.dynamodb.endpointOverride:}")
+    @Value("${aws.dynamodb.endpointOverride}")
     private String dynamodbEndpoint;
     @Value("${region}")
     private String region;
@@ -60,7 +62,11 @@ public class DynamoDbConfig {
     }
 
     @Bean
-    public DynamoDbTable<Product> getCountryLocaleTable(DynamoDbEnhancedClient dbClient) {
+    public DynamoDbTable<Product> getProductTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Product.TABLE_NAME, TableSchema.fromBean(Product.class));
+    }
+    @Bean
+    public DynamoDbTable<Order> getOrderLocaleTable(DynamoDbEnhancedClient dbClient) {
+        return dbClient.table(Order.TABLE_NAME, TableSchema.fromBean(Order.class));
     }
 }
