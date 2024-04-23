@@ -31,7 +31,7 @@ public class DynamoDbConfig {
     }
     @Bean
     @DependsOn("dependencyPlaceholder")
-    public DynamoDbClient getDynamoDbClient(DynamoEndPoint dn) {
+    public DynamoDbClient getDynamoDbClient() {
         var builder = DynamoDbClient
                 .builder()
                 .credentialsProvider(DefaultCredentialsProvider.create());
@@ -39,13 +39,6 @@ public class DynamoDbConfig {
         if (dynamodbEndpoint != null && !dynamodbEndpoint.isBlank()) {
             builder.region(Region.of(region))
                     .endpointOverride(URI.create(dynamodbEndpoint));
-            log.info("DynamoDB Client initialized in region " + region);
-            log.warn("DynamoDB Client ENDPOINT overridden to " + dynamodbEndpoint);
-        }
-        else
-        {
-            builder.region(Region.of(region))
-                    .endpointOverride(URI.create(dn.value()));
             log.info("DynamoDB Client initialized in region " + region);
             log.warn("DynamoDB Client ENDPOINT overridden to " + dynamodbEndpoint);
         }

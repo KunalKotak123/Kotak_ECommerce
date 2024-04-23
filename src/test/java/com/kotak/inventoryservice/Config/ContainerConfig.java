@@ -37,20 +37,11 @@ public class ContainerConfig {
         System.out.println("[CONFIG] DynamoDB endpoint: " + ls.getEndpointOverride(DYNAMODB));
         return ls;
     }
-
-
-    @Bean
-   // @ServiceConnection
-    public DynamoEndPoint dynamoEndpoint(LocalStackContainer ls) {
-        return new DynamoEndPoint(ls.getEndpointOverride(DYNAMODB).toString());
-    }
-
     @Primary
     @Bean
     public int dependencyPlaceholder(LocalStackContainer localStack) {
         return -1;
     }
-
     private static <T extends GenericContainer<T>> void configureForReuse(GenericContainer<T> container) {
         container.withReuse(true);
         if (!container.isRunning()) {
