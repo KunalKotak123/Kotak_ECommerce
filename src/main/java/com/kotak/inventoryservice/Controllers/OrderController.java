@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
     private final OrderService service;
-    private KafkaTemplate<String, Order> template;
+    private final KafkaTemplate<String, Order> template;
 
     public OrderController(OrderService service, KafkaTemplate<String, Order> template) {
         this.service = service;
@@ -36,12 +36,18 @@ public class OrderController {
     public void createOrder(@RequestBody Order order) {
       //  redisService.decreaseOrderQuantity(p1.getProductId(), p1.getQuantity());
         service.add(order);
+
         // push it in kafka queue
         template.send("orders", order.getId(), order );
     }
 
     @PostMapping("/cancel")
     public void cancelOrder(@RequestBody Order order) {
-      // cancel the order and send message to inventory service to bump up quantity
+      // cancel the order and send message to inventory service to bump up quantity.
+        // Step 1: increase quantity in redis
+        // Step 2: increase quantity in ddb
+        // Step 3: update order status in orders table
     }
+
 }
+

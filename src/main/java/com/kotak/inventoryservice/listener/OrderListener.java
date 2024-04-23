@@ -10,7 +10,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 @Configuration
 public class OrderListener {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     public OrderListener(ProductService orderService) {
         this.productService = orderService;

@@ -15,6 +15,10 @@ public class OrderProcessingFactory
         {
             return new PendingOrderProcess(productService);
         }
+        else if(status.equals("Completed"))
+        {
+            return new CompleteOrder(productService);
+        }
             return new CancelPendingOrder(productService);
 
     }
