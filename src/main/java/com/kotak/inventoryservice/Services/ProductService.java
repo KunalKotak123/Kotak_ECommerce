@@ -18,8 +18,18 @@ public class ProductService {
         return repository.getAll();
     }
 
-    public void add(Product p1)
-    {
-        repository.add(p1);
+    public Product getProductById(String id) { return repository.getById(id);}
+
+    public void createProduct(Product product) {repository.create(product);}
+
+    public void update(Product p1) {repository.update(p1);}
+
+    public void deleteProduct(String id) {
+
+        Product product = new Product();
+        product.setId(id);
+        product.setAvailable(false);
+
+        repository.delete(product);
     }
 }

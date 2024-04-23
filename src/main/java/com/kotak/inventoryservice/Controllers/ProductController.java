@@ -1,42 +1,51 @@
 package com.kotak.inventoryservice.Controllers;
 
 import com.kotak.inventoryservice.Dao.Product;
+import com.kotak.inventoryservice.Response.ResponseHandler;
 import com.kotak.inventoryservice.Services.ProductService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Slf4j
-@RestController
-@EnableKafka
-@RequestMapping("/api/v1/countries")
-public class ProductController {
-    private final ProductService service;
-    private KafkaTemplate<Long, Product> template;
 
-    public ProductController(ProductService service, KafkaTemplate<Long, Product> template) {
-        this.service = service;
-        this.template = template;
-    }
+@RestController
+@RequestMapping("/api/v1/products")
+@RequiredArgsConstructor
+public class ProductController {
+    private final ProductService productService;
 
     @GetMapping
-    public List<Product> getAll() {
-        return service.getAll();
+    public List<Product> getAll() {return productService.getAll();}
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getProductById(@PathVariable String id) {
+        Product p1 = productService.getProductById(id);
+        if(p1 != null){
+            return ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, p1);
+        }
+        else {
+            return ResponseHandler.sendResponse("Failed to fetch product details", HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("/add")
-    public void add(@RequestBody Product p1) {
-         service.add(p1);
-         template.send("orders", p1.getProductId(), p1 );
+    @PostMapping
+    public ResponseEntity<Object> createProduct(@RequestBody Product product){
+        productService.createProduct(product);
+        return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK);
     }
 
-    @KafkaListener(id = "orders", topics = "orders")
-    public void onEvent(Product data) {
-        System.out.printf("Order Received - {}%n");
+    @PutMapping
+    public void updateProduct(@RequestBody Product p1) {
+        productService.update(p1);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteProduct(@PathVariable String id){
+        productService.deleteProduct(id);
+        return ResponseHandler.sendResponse("Successfully deleted a product", HttpStatus.OK);
+    }
+
 }
