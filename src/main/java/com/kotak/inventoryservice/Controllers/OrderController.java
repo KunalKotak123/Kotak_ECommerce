@@ -42,6 +42,7 @@ public class OrderController {
         template.send("orders", order.getId(), order );
     }
 
+
     @PostMapping("/cancel")
     public void cancelOrder(@RequestBody Order order) {
       // cancel the order and send message to inventory service to bump up quantity.
