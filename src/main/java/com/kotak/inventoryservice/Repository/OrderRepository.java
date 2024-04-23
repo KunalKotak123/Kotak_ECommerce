@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderRepository {
     private final DynamoDbTable<Order> table;
-
     public List<Order> getAll() {
         return table.scan().items().stream().toList();
     }

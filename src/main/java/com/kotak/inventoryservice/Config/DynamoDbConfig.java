@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,15 +21,13 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Configuration
 @Slf4j
+@NoArgsConstructor
 public class DynamoDbConfig {
     @Value("${aws.dynamodb.endpointOverride}")
     private String dynamodbEndpoint;
     @Value("${region}")
     private String region;
-    public DynamoDbConfig()
-    {
-        System.out.println("I am here");
-    }
+
     @Bean
     @DependsOn("dependencyPlaceholder")
     public DynamoDbClient getDynamoDbClient() {

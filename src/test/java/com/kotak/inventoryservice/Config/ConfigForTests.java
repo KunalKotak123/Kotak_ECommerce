@@ -10,6 +10,6 @@ public class ConfigForTests extends WebMvcConfigurationSupport
 {
     public ConfigForTests()
     {
-        System.out.println("I am here");
+
     }
 }

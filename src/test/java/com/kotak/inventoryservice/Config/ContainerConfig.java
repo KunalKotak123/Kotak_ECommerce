@@ -32,9 +32,9 @@ public class ContainerConfig {
         System.setProperty(
                 "aws.dynamodb.endpointOverride",
                 ls.getEndpointOverride(DYNAMODB).toString());
-        System.out.println("[CONFIG] AWS Access Key: " + ls.getAccessKey());
-        System.out.println("[CONFIG] AWS Secret Key: " + ls.getSecretKey());
-        System.out.println("[CONFIG] DynamoDB endpoint: " + ls.getEndpointOverride(DYNAMODB));
+        log.debug("[CONFIG] AWS Access Key: " + ls.getAccessKey());
+        log.debug("[CONFIG] AWS Secret Key: " + ls.getSecretKey());
+        log.debug("[CONFIG] DynamoDB endpoint: " + ls.getEndpointOverride(DYNAMODB));
         return ls;
     }
     @Primary

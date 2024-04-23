@@ -9,13 +9,12 @@ public class OrderProcessingFactory
 {
 
     @SneakyThrows
-    public static ProcessOrder getOrderProcessor(OrderStatus status, ProductService productService)
-    {
+    public static ProcessOrder getOrderProcessor(OrderStatus status, ProductService productService) {
         return switch (status) {
             case OrderStatus.PENDING -> new PendingOrderProcess(productService);
             case OrderStatus.COMPLETED -> new CompleteOrder(productService);
             case OrderStatus.CANCELED -> new CancelPendingOrder(productService);
-            default -> throw new UnknownOrderStatusException(String.format("Unknown Order Status found {}" ,status));
+            default -> throw new UnknownOrderStatusException(String.format("Unknown Order Status found {}", status));
         };
 
     }
