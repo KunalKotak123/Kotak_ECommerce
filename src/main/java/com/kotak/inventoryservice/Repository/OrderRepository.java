@@ -19,6 +19,6 @@ public class OrderRepository {
     public Order getById(String id) {
         return table.getItem(Key.builder().partitionValue(id).build());
     }
-    public void add(Order p1) {table.putItem(p1);}
+    public Order add(Order p1) {return table.updateItem(p1);}
     public void updateStatus(Order order) {table.putItem(order);}
 }

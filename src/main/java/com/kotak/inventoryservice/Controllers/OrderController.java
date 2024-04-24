@@ -1,12 +1,15 @@
 package com.kotak.inventoryservice.Controllers;
 
 import com.kotak.inventoryservice.Dao.Order;
+import com.kotak.inventoryservice.Response.ResponseHandler;
 import com.kotak.inventoryservice.Services.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -15,29 +18,34 @@ import java.util.List;
 @RequestMapping("/api/v1/orders")
 public class OrderController {
     private final OrderService service;
-    private final KafkaTemplate<String, Order> template;
 
-    public OrderController(OrderService service, KafkaTemplate<String, Order> template) {
+    public OrderController(OrderService service) {
         this.service = service;
-        this.template = template;
-
     }
 
     @GetMapping
-    public List<Order> getAll() {
-        return service.getAll();
+    public ResponseEntity<Object> getAll() {
+        List<Order> orders = service.getAll();
+        return ResponseHandler.sendResponse("Successfully fetched all orders", HttpStatus.OK, orders);
     }
 
     @PostMapping
-    public void createOrder(@RequestBody Order order) {
-        service.add(order);
-        template.send("orders", order.getId(), order );
+    public ResponseEntity<Object> createOrder(@RequestBody Order order) {
+        Order newOrder = service.add(order);
+
+        var orderData = new HashMap<>();
+        var orderDetails = new HashMap<>();
+        orderDetails.put("id", newOrder.getId());
+        orderDetails.put("status", newOrder.getStatus());
+        orderData.put("order_details", orderDetails);
+
+        return ResponseHandler.sendResponse("Successfully initiated the order", HttpStatus.OK, orderData);
     }
 
-
     @PostMapping("/cancel/{id}")
-    public void cancelOrder(@PathVariable String id) {
+    public ResponseEntity<Object> cancelOrder(@PathVariable String id) {
         service.cancelOrder(id);
+        return ResponseHandler.sendResponse("Successfully initiated order cancellation", HttpStatus.OK);
     }
 
 }

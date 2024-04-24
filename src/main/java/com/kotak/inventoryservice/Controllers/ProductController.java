@@ -9,6 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -38,19 +39,26 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
-        productService.createProduct(product);
-        return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK);
+        Product newProduct = productService.createProduct(product);
+
+        var data = new HashMap<>();
+        var productDetails = new HashMap<>();
+        productDetails.put("id", newProduct.getId());
+        productDetails.put("name", newProduct.getName());
+        data.put("product_details", productDetails);
+
+        return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK, data);
     }
 
-    @PutMapping
-    public void updateProduct(@RequestBody Product p1) {
-        productService.update(p1);
-    }
+//    @PutMapping
+//    public void updateProduct(@RequestBody Product p1) {
+//        productService.update(p1);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable String id){
         productService.deleteProduct(id);
-        return ResponseHandler.sendResponse("Successfully deleted a product", HttpStatus.OK);
+        return ResponseHandler.sendResponse("Successfully removed the product", HttpStatus.OK);
     }
 
 }

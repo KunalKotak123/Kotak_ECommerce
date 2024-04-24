@@ -25,12 +25,12 @@ public class ProductRepository {
         return table.getItem(Key.builder().partitionValue(id).build());
     }
 
-    public void create(Product product) {
-        table.putItem(product);
+    public Product create(Product product) {
+        return table.updateItem(product);
     }
 
     public void update(Product p1) {
-        table.putItem(p1);
+        table.updateItem(p1);
     }
 
     public List<Product> getProducts(List<String> ids) {
@@ -47,6 +47,7 @@ public class ProductRepository {
     }
 
     public void delete(Product id) {
+
         table.updateItem(id);
     }
 

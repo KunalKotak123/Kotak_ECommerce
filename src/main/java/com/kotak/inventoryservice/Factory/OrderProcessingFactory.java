@@ -1,7 +1,7 @@
 package com.kotak.inventoryservice.Factory;
 
 import com.kotak.inventoryservice.Enums.OrderStatus;
-import com.kotak.inventoryservice.Exception.UnknownOrderStatusException;
+import com.kotak.inventoryservice.Controllers.Exception.UnknownOrderStatusException;
 import com.kotak.inventoryservice.Services.ProductService;
 import lombok.SneakyThrows;
 
@@ -14,7 +14,7 @@ public class OrderProcessingFactory
         return switch (status) {
             case OrderStatus.PENDING -> new PendingOrderProcess(productService);
             case OrderStatus.COMPLETED -> new CompleteOrder(productService);
-            case OrderStatus.CANCELED -> new CancelPendingOrder(productService);
+            case OrderStatus.CANCELED -> new CancelOrder(productService);
             default -> throw new UnknownOrderStatusException(String.format("Unknown Order Status found {}" ,status));
         };
 
