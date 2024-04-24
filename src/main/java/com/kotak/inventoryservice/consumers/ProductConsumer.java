@@ -21,5 +21,11 @@ public class ProductConsumer {
         if(order.getStatus().equals(OrderStatus.ACCEPTED.getValue())){
             orderService.processOrder(order);
         }
+        else if(order.getStatus().equals(OrderStatus.REJECTED.getValue())){
+            orderService.rejectOrder(order);
+        }
+        else if(order.getStatus().equals(OrderStatus.CANCELED.getValue())){
+            orderService.confirmCancellation(order);
+        }
     }
 }

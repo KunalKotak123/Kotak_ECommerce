@@ -3,9 +3,9 @@ package com.kotak.inventoryservice.Factory;
 import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Services.ProductService;
 
-public class CancelPendingOrder implements ProcessOrder {
+public class CancelOrder implements ProcessOrder {
     private final ProductService productService;
-    public CancelPendingOrder(ProductService productService)
+    public CancelOrder(ProductService productService)
     {
         this.productService = productService;
     }

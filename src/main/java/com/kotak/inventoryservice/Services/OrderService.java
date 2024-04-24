@@ -24,20 +24,29 @@ public class OrderService {
         return repository.getAll();
     }
 
-    public void add(Order p1) {repository.add(p1);}
+    public Order add(Order order) {
+        template.send("orders", order.getId(), order );
+        return repository.add(order);
+    }
 
-    public void processOrder(Order order)
-    {
+    public void processOrder(Order order) {
         order.setStatus(OrderStatus.COMPLETED.getValue());
         repository.updateStatus(order);
         template.send("orders", order.getId(), order);
     }
 
-    public void cancelOrder(String id)
-    {
+    public void cancelOrder(String id) {
         Order order = repository.getById(id);
         order.setStatus(OrderStatus.CANCELED.getValue());
-        repository.updateStatus(order);
         template.send("orders", order.getId(), order);
+    }
+
+    public void confirmCancellation(Order order) {
+        repository.updateStatus(order);
+    }
+
+    public void rejectOrder(Order order) {
+        order.setStatus(OrderStatus.REJECTED.getValue());
+        repository.updateStatus(order);
     }
 }
