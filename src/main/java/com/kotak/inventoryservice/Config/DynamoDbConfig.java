@@ -57,6 +57,7 @@ public class DynamoDbConfig {
     public DynamoDbTable<Product> getProductTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Product.TABLE_NAME, TableSchema.fromBean(Product.class));
     }
+
     @Bean
     public DynamoDbTable<Order> getOrderLocaleTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Order.TABLE_NAME, TableSchema.fromBean(Order.class));

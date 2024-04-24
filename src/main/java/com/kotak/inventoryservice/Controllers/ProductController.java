@@ -23,21 +23,24 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {return productService.getAll();}
+    public List<Product> getAll() {
+        return productService.getAll();
+    }
+
     private KafkaTemplate<String, Product> template;
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable String id) {
         Product p1 = productService.getProductById(id);
-        if(p1 != null){
+        if (p1 != null) {
             return ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, p1);
-        }
-        else {
+        } else {
             return ResponseHandler.sendResponse("Failed to fetch product details", HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Object> createProduct(@RequestBody Product product){
+    public ResponseEntity<Object> createProduct(@RequestBody Product product) {
         productService.createProduct(product);
         return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK);
     }
@@ -48,7 +51,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable String id){
+    public ResponseEntity<Object> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseHandler.sendResponse("Successfully deleted a product", HttpStatus.OK);
     }

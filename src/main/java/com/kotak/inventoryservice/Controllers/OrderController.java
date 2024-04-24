@@ -31,7 +31,7 @@ public class OrderController {
     @PostMapping
     public void createOrder(@RequestBody Order order) {
         service.add(order);
-        template.send("orders", order.getId(), order );
+        template.send("orders", order.getId(), order);
     }
 
 

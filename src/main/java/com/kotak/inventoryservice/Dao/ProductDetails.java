@@ -6,8 +6,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 @DynamoDBDocument
 @DynamoDbBean
-public class ProductDetails
-{
+public class ProductDetails {
     public void setId(String id) {
         this.id = id;
     }
@@ -20,6 +19,7 @@ public class ProductDetails
     public String getId() {
         return id;
     }
+
     @DynamoDBAttribute(attributeName = "quantity")
     public int getQuantity() {
         return quantity;

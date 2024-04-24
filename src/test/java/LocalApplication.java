@@ -3,8 +3,7 @@ import com.kotak.inventoryservice.EcommerceApplication;
 import org.springframework.boot.SpringApplication;
 import software.amazon.awssdk.regions.Region;
 
-public class LocalApplication
-{
+public class LocalApplication {
 
     public static void main(String[] args) {
         System.setProperty("region", Region.AP_SOUTH_1.toString());

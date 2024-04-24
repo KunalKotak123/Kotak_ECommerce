@@ -5,10 +5,11 @@ import com.kotak.inventoryservice.Services.ProductService;
 
 public class CancelPendingOrder implements ProcessOrder {
     private final ProductService productService;
-    public CancelPendingOrder(ProductService productService)
-    {
+
+    public CancelPendingOrder(ProductService productService) {
         this.productService = productService;
     }
+
     @Override
     public void processOrder(Order order) {
         productService.cancelOrder(order);
