@@ -1,6 +1,7 @@
 package com.kotak.inventoryservice.Controllers;
 
 import com.kotak.inventoryservice.Dao.Product;
+import com.kotak.inventoryservice.Dao.ProductList;
 import com.kotak.inventoryservice.Response.ResponseHandler;
 import com.kotak.inventoryservice.Services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {return productService.getAll();}
+    public ProductList getAll() {return productService.getAll();}
+
     private KafkaTemplate<String, Product> template;
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable String id) {
@@ -50,10 +52,10 @@ public class ProductController {
         return ResponseHandler.sendResponse("Successfully created a product", HttpStatus.OK, data);
     }
 
-//    @PutMapping
-//    public void updateProduct(@RequestBody Product p1) {
-//        productService.update(p1);
-//    }
+    @PutMapping
+    public void updateProduct(@RequestBody Product p1) {
+        productService.update(p1);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable String id){

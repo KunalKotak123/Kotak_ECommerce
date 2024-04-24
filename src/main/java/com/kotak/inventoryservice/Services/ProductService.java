@@ -42,12 +42,7 @@ public class ProductService {
     }
 
     public void deleteProduct(String id) {
-
-        Product product = new Product();
-        product.setId(id);
-        product.setAvailable(false);
-
-//        repository.delete(id);
+        repository.delete(id);
     }
 
 

@@ -1,7 +1,7 @@
 package com.kotak.inventoryservice.Factory;
 
 import com.kotak.inventoryservice.Enums.OrderStatus;
-import com.kotak.inventoryservice.Controllers.Exception.UnknownOrderStatusException;
+import com.kotak.inventoryservice.Exception.UnknownOrderStatusException;
 import com.kotak.inventoryservice.Services.ProductService;
 import lombok.SneakyThrows;
 

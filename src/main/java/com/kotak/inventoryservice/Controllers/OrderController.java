@@ -1,6 +1,7 @@
 package com.kotak.inventoryservice.Controllers;
 
 import com.kotak.inventoryservice.Dao.Order;
+import com.kotak.inventoryservice.Exception.UnknownOrderStatusException;
 import com.kotak.inventoryservice.Response.ResponseHandler;
 import com.kotak.inventoryservice.Services.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +32,19 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Object> createOrder(@RequestBody Order order) {
-        Order newOrder = service.add(order);
+        try {
+            Order newOrder = service.add(order);
 
-        var orderData = new HashMap<>();
-        var orderDetails = new HashMap<>();
-        orderDetails.put("id", newOrder.getId());
-        orderDetails.put("status", newOrder.getStatus());
-        orderData.put("order_details", orderDetails);
+            var orderData = new HashMap<>();
+            var orderDetails = new HashMap<>();
+            orderDetails.put("id", newOrder.getId());
+            orderDetails.put("status", newOrder.getStatus());
+            orderData.put("order_details", orderDetails);
 
-        return ResponseHandler.sendResponse("Successfully initiated the order", HttpStatus.OK, orderData);
+            return ResponseHandler.sendResponse("Successfully initiated the order", HttpStatus.OK, orderData);
+        } catch (Exception ex) {
+            throw new UnknownOrderStatusException("Failed to create an order");
+        }
     }
 
     @PostMapping("/cancel/{id}")

@@ -2,6 +2,7 @@ package com.kotak.inventoryservice.Services;
 
 import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Enums.OrderStatus;
+import com.kotak.inventoryservice.Exception.UnknownOrderStatusException;
 import com.kotak.inventoryservice.Repository.OrderRepository;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,12 @@ public class OrderService {
     }
 
     public Order add(Order order) {
-        template.send("orders", order.getId(), order );
-        return repository.add(order);
+        try {
+            template.send("orders", order.getId(), order);
+            return repository.add(order);
+        } catch (Exception ex) {
+            throw new UnknownOrderStatusException("Failed to create order");
+        }
     }
 
     public void processOrder(Order order) {
@@ -37,6 +42,9 @@ public class OrderService {
 
     public void cancelOrder(String id) {
         Order order = repository.getById(id);
+        if(order.getStatus().equals(OrderStatus.CANCELED.getValue())){
+            throw new UnknownOrderStatusException("Order is already cancelled");
+        }
         order.setStatus(OrderStatus.CANCELED.getValue());
         template.send("orders", order.getId(), order);
     }
