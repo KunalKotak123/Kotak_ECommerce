@@ -36,12 +36,7 @@ public class ProductService {
     public void update(Product p1) {repository.update(p1);}
 
     public void deleteProduct(String id) {
-
-        Product product = new Product();
-        product.setId(id);
-        product.setAvailable(false);
-
-        repository.delete(product);
+        repository.delete(id);
     }
 
 

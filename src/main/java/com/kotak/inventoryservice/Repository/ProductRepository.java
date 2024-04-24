@@ -30,13 +30,13 @@ public class ProductRepository {
     public Product getById(String id) {
         return table.getItem(Key.builder().partitionValue(id).build());
     }
-    @Caching(evict = {@CacheEvict(cacheNames = "products", allEntries = true) })
+    @CacheEvict(cacheNames = "products", allEntries = true)
     public void create(Product product) {
         table.putItem(product);
     }
-    @Caching(evict = {@CacheEvict(cacheNames = "products", allEntries = true) })
-    public void update(Product p1) {
-        table.putItem(p1);
+    @CacheEvict(cacheNames = "products", allEntries = true)
+    public void update(Product product) {
+        table.updateItem(p -> p.item(product).ignoreNulls(true));
     }
 
     public List<Product> getProducts(List<String> ids) {
@@ -53,8 +53,10 @@ public class ProductRepository {
     }
     @Caching(evict = { @CacheEvict(cacheNames = "product", key = "#id"),
             @CacheEvict(cacheNames = "products", allEntries = true) })
-    public void delete(Product id) {
-        table.updateItem(id);
+    public void delete(String id) {
+        var product = getById(id);
+        product.setAvailable(false);
+        update(product);
     }
 
     public Executor taskExecutor() {
