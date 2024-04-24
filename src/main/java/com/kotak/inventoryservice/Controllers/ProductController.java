@@ -9,8 +9,6 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @EnableKafka
 @RequestMapping("/api/v1/products")
@@ -23,20 +21,20 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
-        return productService.getAll();
+    public ResponseEntity<Object> getAll()
+    {
+        var products = productService.getAll();
+        return ResponseHandler.sendResponse("Successfully fetched list of Products", HttpStatus.OK, products);
     }
 
     private KafkaTemplate<String, Product> template;
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable String id) {
-        Product p1 = productService.getProductById(id);
-        if (p1 != null) {
-            return ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, p1);
-        } else {
-            return ResponseHandler.sendResponse("Failed to fetch product details", HttpStatus.NOT_FOUND);
-        }
+        Product product = productService.getProductById(id);
+        return product == null ?
+            ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, product) :
+             ResponseHandler.sendResponse("Failed to fetch product details", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
