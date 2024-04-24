@@ -1,3 +1,11 @@
+spring:
+  cache:
+    type: redis
+    host: localhost
+    port: 6379
+    redis:
+      time-to-live: 60000
+
 #aws:
 #  dynamodb:
 #    endpointOverride: ignore
@@ -14,5 +22,7 @@ spring.kafka:
     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 spring.output.ansi.enabled: ALWAYS
+
+
 
 logging.pattern.console: "%clr(%d{HH:mm:ss.SSS}){blue} %clr(---){faint} %clr([%15.15t]){yellow} %clr(:){red} %clr(%m){faint}%n"

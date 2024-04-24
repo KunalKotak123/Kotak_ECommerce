@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,18 +21,16 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 @Configuration
 @Slf4j
+@NoArgsConstructor
 public class DynamoDbConfig {
     @Value("${aws.dynamodb.endpointOverride}")
     private String dynamodbEndpoint;
     @Value("${region}")
     private String region;
-    public DynamoDbConfig()
-    {
-        System.out.println("I am here");
-    }
+
     @Bean
     @DependsOn("dependencyPlaceholder")
-    public DynamoDbClient getDynamoDbClient(DynamoEndPoint dn) {
+    public DynamoDbClient getDynamoDbClient() {
         var builder = DynamoDbClient
                 .builder()
                 .credentialsProvider(DefaultCredentialsProvider.create());
@@ -39,13 +38,6 @@ public class DynamoDbConfig {
         if (dynamodbEndpoint != null && !dynamodbEndpoint.isBlank()) {
             builder.region(Region.of(region))
                     .endpointOverride(URI.create(dynamodbEndpoint));
-            log.info("DynamoDB Client initialized in region " + region);
-            log.warn("DynamoDB Client ENDPOINT overridden to " + dynamodbEndpoint);
-        }
-        else
-        {
-            builder.region(Region.of(region))
-                    .endpointOverride(URI.create(dn.value()));
             log.info("DynamoDB Client initialized in region " + region);
             log.warn("DynamoDB Client ENDPOINT overridden to " + dynamodbEndpoint);
         }
@@ -65,6 +57,7 @@ public class DynamoDbConfig {
     public DynamoDbTable<Product> getProductTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Product.TABLE_NAME, TableSchema.fromBean(Product.class));
     }
+
     @Bean
     public DynamoDbTable<Order> getOrderLocaleTable(DynamoDbEnhancedClient dbClient) {
         return dbClient.table(Order.TABLE_NAME, TableSchema.fromBean(Order.class));

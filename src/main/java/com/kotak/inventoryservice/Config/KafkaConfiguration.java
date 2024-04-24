@@ -7,8 +7,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
-public class KafkaConfiguration
-{
+public class KafkaConfiguration {
     @Bean
     @DependsOn("dependencyPlaceholder")
     public NewTopic orders() {

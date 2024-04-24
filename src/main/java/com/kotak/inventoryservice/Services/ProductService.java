@@ -3,6 +3,7 @@ package com.kotak.inventoryservice.Services;
 import com.kotak.inventoryservice.Dao.Order;
 import com.kotak.inventoryservice.Dao.Product;
 import com.kotak.inventoryservice.Dao.ProductDetails;
+import com.kotak.inventoryservice.Dao.ProductList;
 import com.kotak.inventoryservice.Enums.OrderStatus;
 import com.kotak.inventoryservice.Repository.ProductRepository;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,7 +25,7 @@ public class ProductService {
         this.template = template;
     }
 
-    public List<Product> getAll() {
+    public ProductList getAll() {
         return repository.getAll();
     }
 

@@ -18,7 +18,7 @@ public class OrderConsumer {
 
     @KafkaListener(id = "orders", topics = "orders")
     public void onEvent(Order order) {
-        var op = OrderProcessingFactory.getOrderProcessor(OrderStatus.valueOf(order.getStatus()),productService);
+        var op = OrderProcessingFactory.getOrderProcessor(OrderStatus.valueOf(order.getStatus()), productService);
         op.processOrder(order);
     }
 

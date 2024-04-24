@@ -6,10 +6,5 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 @Import({ContainerConfig.class, SetupConfig.class})
-public class ConfigForTests extends WebMvcConfigurationSupport
-{
-    public ConfigForTests()
-    {
-        System.out.println("I am here");
-    }
+public class ConfigForTests extends WebMvcConfigurationSupport {
 }
