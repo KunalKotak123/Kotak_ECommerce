@@ -30,11 +30,11 @@ public class ProductRepository {
     public Product getById(String id) {
         return table.getItem(Key.builder().partitionValue(id).build());
     }
-
+    @Caching(evict = {@CacheEvict(cacheNames = "products", allEntries = true) })
     public void create(Product product) {
         table.putItem(product);
     }
-
+    @Caching(evict = {@CacheEvict(cacheNames = "products", allEntries = true) })
     public void update(Product p1) {
         table.putItem(p1);
     }
