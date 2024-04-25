@@ -17,7 +17,6 @@ public class ProductConsumer {
 
     @KafkaListener(id = "stock-orders", topics = "stock-orders")
     public void onAcceptOrRejectEvent(Order order) {
-        System.out.println(order.getStatus());
         if (order.getStatus().equals(OrderStatus.ACCEPTED.getValue())) {
             orderService.processOrder(order);
         }

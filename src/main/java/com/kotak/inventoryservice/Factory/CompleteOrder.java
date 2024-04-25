@@ -14,7 +14,7 @@ public class CompleteOrder implements ProcessOrder {
     @Override
     public void processOrder(Order order)
     {
-        log.info("[Trace Order]  Complete Order " + order);
+        log.info("[Trace Order] Raised request to update inventory quantity " + order);
         productService.completeOrder(order);
     }
 }

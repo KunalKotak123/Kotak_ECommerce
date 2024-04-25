@@ -13,7 +13,7 @@ public class CancelOrder implements ProcessOrder {
     }
     @Override
     public void processOrder(Order order) {
-        log.info("[Cancel Order]  Check Order " + order);
+        log.info("[Cancel Order] Check Order to cancel order" + order);
         productService.cancelOrder(order);
     }
 }

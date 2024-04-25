@@ -33,7 +33,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Object> createOrder(@RequestBody Order order) {
         try {
-            log.info("[Trace Order] Order Created " + order);
+            log.info("[Trace Order] Order Create request received " + order);
             Order newOrder = service.add(order);
             var orderData = new HashMap<>();
             var orderDetails = new HashMap<>();
@@ -49,6 +49,7 @@ public class OrderController {
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelOrder(@PathVariable String id) {
+        log.info("[Trace Order] Cancel order request received for Order id: " + id);
         service.cancelOrder(id);
         return ResponseHandler.sendResponse("Successfully initiated order cancellation", HttpStatus.OK);
     }

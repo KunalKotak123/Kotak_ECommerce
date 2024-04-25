@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
+    private final KafkaTemplate<String, Product> template;
 
     public ProductController(ProductService productService, KafkaTemplate<String, Product> template) {
         this.productService = productService;
@@ -25,22 +26,23 @@ public class ProductController {
     }
 
     @GetMapping
-    public ProductList getAll() {return productService.getAll();}
+    public ResponseEntity<Object> getAll() {
+        return ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, productService.getAll());
+    }
 
-    private KafkaTemplate<String, Product> template;
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable String id) {
         Product p1 = productService.getProductById(id);
-        if(p1 != null){
+        if (p1 != null) {
             return ResponseHandler.sendResponse("Successfully fetched product details", HttpStatus.OK, p1);
-        }
-        else {
+        } else {
             return ResponseHandler.sendResponse("Failed to fetch product details", HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Object> createProduct(@RequestBody Product product){
+    public ResponseEntity<Object> createProduct(@RequestBody Product product) {
         Product newProduct = productService.createProduct(product);
 
         var data = new HashMap<>();
@@ -53,12 +55,12 @@ public class ProductController {
     }
 
     @PutMapping
-    public void updateProduct(@RequestBody Product p1) {
-        productService.update(p1);
+    public ResponseEntity<Object> updateProduct(@RequestBody Product p1) {
+        return ResponseHandler.sendResponse("Successfully updated product", HttpStatus.OK, productService.update(p1));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable String id){
+    public ResponseEntity<Object> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseHandler.sendResponse("Successfully removed the product", HttpStatus.OK);
     }

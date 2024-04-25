@@ -38,8 +38,8 @@ public class ProductService {
         return repository.create(product);
     }
 
-    public void update(Product p1) {
-        repository.update(p1);
+    public Product update(Product p1) {
+        return repository.update(p1);
     }
 
     public void deleteProduct(String id) {
@@ -58,12 +58,12 @@ public class ProductService {
                 product.setQuantity(newQty);
             });
             repository.updateProductsQuantity(orderProducts);
-            log.info("[Trace Order] Order Accepted" + order);
             order.setStatus(OrderStatus.ACCEPTED.getValue());
+            log.info("[Trace Order] Order Accepted " + order);
             template.send("stock-orders", order.getId(), order);
         } else {
-            log.info("[Trace Order] Order Rejected" + order);
             order.setStatus(OrderStatus.REJECTED.getValue());
+            log.info("[Trace Order] Order Rejected. Product(s) are unavailable " + order);
             template.send("stock-orders", order.getId(), order);
         }
     }
@@ -75,8 +75,7 @@ public class ProductService {
             orderProducts.forEach((product -> {
                 var requiredQty = order.getProducts().stream().filter(x -> x.getId().equals(product.getId())).findFirst().get().getQuantity();
                 if (product.getQuantity() <= requiredQty) {
-                    log.info("[Trace Order] Order Rejected " + order +
-                            " Product has not have enough quantity " + product.getName());
+                    log.info("[Trace Order] Order Rejected. [ "+product.getName()+" ] has not have enough quantity " + order);
                     hasQuantity.set(false);
                 }
             }));
@@ -94,7 +93,7 @@ public class ProductService {
             product.setQuantity(product.getQuantity() + requiredQty);
         });
         repository.updateProductsQuantity(orderProducts);
-        log.info("[Trace Order] Order Cancellation Accepted" + order);
+        log.info("[Cancel Order] Successfully updated inventory with canceled order quantity " + order);
         template.send("stock-orders", order.getId(), order);
     }
 
@@ -106,7 +105,7 @@ public class ProductService {
             product.setReserveQuantity(product.getReserveQuantity() - requiredQty);
         });
         repository.updateProductsQuantity(orderProducts);
-
+        log.info("[Trace Order] Updated inventory quantity successfully " + order);
         // Todo : At this point send notification to user to notify that the order completed successfully
     }
 }

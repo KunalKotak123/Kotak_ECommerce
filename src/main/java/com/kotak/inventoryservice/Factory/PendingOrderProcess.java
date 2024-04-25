@@ -14,7 +14,7 @@ public class PendingOrderProcess implements ProcessOrder {
     @Override
     public void processOrder(Order order)
     {
-        log.info("[Trace Order]  Check Order " + order);
+        log.info("[Trace Order] Check Order " + order);
         productService.checkOrder(order);
     }
 }

@@ -35,8 +35,8 @@ public class ProductRepository {
         return table.updateItem(product);
     }
     @CacheEvict(cacheNames = "products", allEntries = true)
-    public void update(Product product) {
-        table.updateItem(p -> p.item(product).ignoreNulls(true));
+    public Product update(Product product) {
+        return table.updateItem(p -> p.item(product).ignoreNulls(true));
     }
 
     public List<Product> getProducts(List<String> ids) {
