@@ -6,13 +6,14 @@ import com.kotak.inventoryservice.Dao.ProductDetails;
 import com.kotak.inventoryservice.Dao.ProductList;
 import com.kotak.inventoryservice.Enums.OrderStatus;
 import com.kotak.inventoryservice.Repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
+@Slf4j
 @Service
 public class ProductService {
 
@@ -57,9 +58,11 @@ public class ProductService {
                 product.setQuantity(newQty);
             });
             repository.updateProductsQuantity(orderProducts);
+            log.info("[Trace Order] Order Accepted" + order);
             order.setStatus(OrderStatus.ACCEPTED.getValue());
             template.send("stock-orders", order.getId(), order);
         } else {
+            log.info("[Trace Order] Order Rejected" + order);
             order.setStatus(OrderStatus.REJECTED.getValue());
             template.send("stock-orders", order.getId(), order);
         }
@@ -72,6 +75,8 @@ public class ProductService {
             orderProducts.forEach((product -> {
                 var requiredQty = order.getProducts().stream().filter(x -> x.getId().equals(product.getId())).findFirst().get().getQuantity();
                 if (product.getQuantity() <= requiredQty) {
+                    log.info("[Trace Order] Order Rejected " + order +
+                            " Product has not have enough quantity " + product.getName());
                     hasQuantity.set(false);
                 }
             }));
@@ -89,6 +94,7 @@ public class ProductService {
             product.setQuantity(product.getQuantity() + requiredQty);
         });
         repository.updateProductsQuantity(orderProducts);
+        log.info("[Trace Order] Order Cancellation Accepted" + order);
         template.send("stock-orders", order.getId(), order);
     }
 

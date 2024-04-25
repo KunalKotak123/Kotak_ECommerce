@@ -27,8 +27,9 @@ public class OrderService {
 
     public Order add(Order order) {
         try {
-            template.send("orders", order.getId(), order);
-            return repository.add(order);
+            var createdOrder = repository.add(order);
+            template.send("orders", order.getId(), createdOrder);
+            return createdOrder;
         } catch (Exception ex) {
             throw new UnknownOrderStatusException("Failed to create order");
         }

@@ -33,8 +33,8 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Object> createOrder(@RequestBody Order order) {
         try {
+            log.info("[Trace Order] Order Created " + order);
             Order newOrder = service.add(order);
-
             var orderData = new HashMap<>();
             var orderDetails = new HashMap<>();
             orderDetails.put("id", newOrder.getId());
