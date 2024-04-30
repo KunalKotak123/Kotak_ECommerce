@@ -36,6 +36,9 @@ public class ProductRepository {
     }
     @CacheEvict(cacheNames = "products", allEntries = true)
     public Product update(Product product) {
+        var tempProduct = getById(product.getId());
+        if(tempProduct == null)
+                return null;
         return table.updateItem(p -> p.item(product).ignoreNulls(true));
     }
 

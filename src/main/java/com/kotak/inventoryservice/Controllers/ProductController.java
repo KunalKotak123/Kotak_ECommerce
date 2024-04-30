@@ -61,6 +61,9 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<Object> updateProduct(@RequestBody Product p1) {
         log.info("[Trace Product] Update product request received: {}", p1);
+        Product updatedProduct = productService.update(p1);
+        if(updatedProduct == null)
+            return ResponseHandler.sendResponse("Product doesn't exists.", HttpStatus.NOT_FOUND);
         return ResponseHandler.sendResponse("Successfully updated product", HttpStatus.OK, productService.update(p1));
     }
 
